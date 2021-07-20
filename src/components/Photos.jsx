@@ -12,9 +12,7 @@ class Photo extends Component {
   // получаем фото по id альбома
   componentDidMount() {
     axios
-      .get(
-        `https://jsonplaceholder.typicode.com/photos?albumId=${this.props.match.params.id}`
-      )
+      .get(`http://localhost:3001/photos?albumId=${this.props.match.params.id}`)
       .then((res) => {
         this.setState({
           photo: res.data,
