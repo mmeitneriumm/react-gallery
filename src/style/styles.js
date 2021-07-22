@@ -59,9 +59,10 @@ let styles = {
   },
   AllCards: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-    gap: 40,
+    gridTemplateColumns: "1fr 1fr 1fr",
     justifyItems: "center",
+    justifyContent: "center",
+    gap: 40,
   },
   ModalImage: {
     display: "flex",
@@ -82,6 +83,8 @@ let styles = {
     flexDirection: "column",
     alignItems: "center",
   },
+
+  //DeleteModal.jsx
 };
 
 const modalStyle = {

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import DeleteModal from "../components/DeleteModal";
 import { styles } from "../style/styles";
 import { NavLink } from "react-router-dom";
 import { Button, Card } from "antd";
@@ -45,7 +46,7 @@ class Album extends Component {
     return (
       <>
         {albumData
-          .map((albumItem) => {
+          .map((albumItem, index) => {
             if (!hidden.includes(albumItem.id))
               return (
                 <Card
@@ -58,19 +59,13 @@ class Album extends Component {
                       <NavLink to={"/photos/" + albumItem.id}>
                         <img
                           alt={albumItem.id}
-                          src={
-                            photoData.length > 0
-                              ? photoData[albumItem.id - 1][0]
-                              : ""
-                          }
+                          src={photoData.length > 0 ? photoData[index][0] : ""}
                           style={styles.Img}
                         />
                         <p style={styles.CardTitle}>{albumItem.title}</p>
                         <p style={styles.CountText}>
                           Количество:{" "}
-                          {photoData.length > 0
-                            ? photoData[albumItem.id - 1][1]
-                            : ""}
+                          {photoData.length > 0 ? photoData[index][1] : ""}
                         </p>
                       </NavLink>
                       <div style={styles.Buttons}>
@@ -84,7 +79,7 @@ class Album extends Component {
                           Скрыть
                         </Button>
                         <Button>Изменить</Button>
-                        <Button>Удалить</Button>
+                        <DeleteModal id={albumItem.id} type={"albums"} />
                       </div>
                     </>
                   }

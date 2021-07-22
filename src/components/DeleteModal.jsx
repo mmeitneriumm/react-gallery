@@ -6,10 +6,13 @@ import axios from "axios";
 
 Modal.setAppElement("#root");
 
-class CreateAlbum extends React.Component {
+class DeleteModal extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     modalIsOpen: false,
-    textInput: "",
   };
 
   openModal() {
@@ -20,9 +23,11 @@ class CreateAlbum extends React.Component {
     this.setState({ modalIsOpen: false });
   }
 
-  handleCreate() {
-    axios.post("http://localhost:3001/albums", {
-      title: this.state.textInput,
+  handleDelete() {
+    axios.delete("http://localhost:3001/" + this.props.type, {
+      data: {
+        id: this.props.id,
+      },
     });
   }
 
@@ -30,13 +35,11 @@ class CreateAlbum extends React.Component {
     return (
       <>
         <Button
-          style={styles.Button}
-          size={"large"}
           onClick={() => {
             this.openModal();
           }}
         >
-          Создать альбом
+          Удалить
         </Button>
         <Modal
           style={modalStyle}
@@ -47,7 +50,7 @@ class CreateAlbum extends React.Component {
           contentLabel="Modal #2 Global Style Override Example"
         >
           <div style={styles.ModalForm}>
-            <h2 style={styles.ModalMainText}>Создать альбом</h2>
+            <h2 style={styles.ModalMainText}>Удалить</h2>
             <Button
               onClick={() => {
                 this.closeModal();
@@ -57,24 +60,25 @@ class CreateAlbum extends React.Component {
             </Button>
           </div>
           <div style={styles.InputForm}>
-            <div>Введите название</div>
-            <form>
-              <input
-                type="text"
-                onChange={(event) =>
-                  this.setState({ textInput: event.target.value })
-                }
-              />
-            </form>
-            <Button
-              onClick={async () => {
-                await this.handleCreate();
-                this.closeModal();
-                window.location.reload();
-              }}
-            >
-              Создать
-            </Button>
+            <div>Вы уверенны, что хотите удалить?</div>
+            <div>
+              <Button
+                onClick={async () => {
+                  await this.handleDelete();
+                  this.closeModal();
+                  window.location.reload();
+                }}
+              >
+                Да
+              </Button>
+              <Button
+                onClick={async () => {
+                  this.closeModal();
+                }}
+              >
+                Нет
+              </Button>
+            </div>
           </div>
         </Modal>
       </>
@@ -82,4 +86,4 @@ class CreateAlbum extends React.Component {
   }
 }
 
-export default CreateAlbum;
+export default DeleteModal;
