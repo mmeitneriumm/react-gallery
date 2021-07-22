@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { styles } from "../style/styles";
 import axios from "axios";
 import ModalImage from "react-modal-image";
 import { Button } from "@material-ui/core";
@@ -21,16 +22,10 @@ class Photo extends Component {
   }
 
   render() {
-    const photo = this.state.photo;
-    const hidden = this.state.hidden;
+    const { photo, hidden } = this.state;
+
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-        }}
-      >
+      <div style={styles.PhotoCard}>
         <Button
           onClick={() => {
             this.setState({ hidden: photo.map((photo) => photo.id) });
@@ -38,18 +33,11 @@ class Photo extends Component {
         >
           Скрыть все
         </Button>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-            gap: 40,
-            justifyItems: "center",
-          }}
-        >
+        <div style={styles.AllCards}>
           {photo.map((photo) => {
             if (!hidden.includes(photo.id))
               return (
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={styles.ModalImage}>
                   <ModalImage
                     small={photo.thumbnailUrl}
                     large={photo.url}

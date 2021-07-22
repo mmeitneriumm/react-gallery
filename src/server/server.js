@@ -1,14 +1,38 @@
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
-const { readFileSync } = require("fs");
+const { readFileSync, writeFileSync } = require("fs");
 
 var app = express();
 app.use(cors());
+app.use(express.json());
+
+app.use(express.static(__dirname + "/public"));
 
 app.get("/albums", function (request, response) {
   var fileName = path.resolve(__dirname, "./data/albums.json");
   response.sendFile(fileName);
+});
+
+// создаем альбом
+app.post("/albums", function (request, response) {
+  var fileName = path.resolve(__dirname, "./data/albums.json");
+  let data = readFileSync(fileName, "utf8");
+  let albums = JSON.parse(data);
+  let newAlbum = request.body;
+  newAlbum.id =
+    Math.max.apply(
+      Math,
+      albums.map(function (album) {
+        return album.id;
+      })
+    ) + 1;
+
+  albums.push(newAlbum);
+  // console.dir(albums, { maxArrayLength: null });
+  response.send(albums);
+
+  writeFileSync(fileName, JSON.stringify(albums, null, 4));
 });
 
 app.get("/photos", function (request, response) {

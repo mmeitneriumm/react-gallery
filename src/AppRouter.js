@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Gallery from "./components/Gallery";
-import Photo from "./components/Photos";
+import Gallery from "./page/Gallery";
+import Photo from "./page/Photos";
 
 class AppRouter extends Component {
   constructor(props) {
