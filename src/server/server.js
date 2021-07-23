@@ -154,7 +154,7 @@ app.patch("/photos", function (request, response) {
     return e.id;
   });
 
-  let index = array.indexOf(request.body.id);
+  let index = array.indexOf(Number(request.body.id));
 
   if (index > -1) {
     photos[index].title = request.body.title;
@@ -167,7 +167,6 @@ app.patch("/photos", function (request, response) {
   }
 
   response.send(photos);
-  console.log(request.body);
   writeFileSync(fileName, JSON.stringify(photos, null, 4));
 });
 
