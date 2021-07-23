@@ -39,6 +39,27 @@ app.post("/albums", function (request, response) {
   writeFileSync(fileName, JSON.stringify(albums, null, 4));
 });
 
+// изменение альбома
+app.patch("/albums", function (request, response) {
+  var fileName = path.resolve(__dirname, "./data/albums.json");
+  let data = readFileSync(fileName, "utf8");
+  let albums = JSON.parse(data);
+
+  let array = albums.map(function (e) {
+    return e.id;
+  });
+
+  let index = array.indexOf(request.body.id);
+
+  if (index > -1) {
+    albums[index].title = request.body.title;
+  }
+
+  response.send(albums);
+
+  writeFileSync(fileName, JSON.stringify(albums, null, 4));
+});
+
 // удаление альбома
 app.delete("/albums", function (request, response) {
   var fileName = path.resolve(__dirname, "./data/albums.json");
@@ -123,6 +144,33 @@ app.post("/photos", function (request, response) {
   writeFileSync(fileName, JSON.stringify(photos, null, 4));
 });
 
+// изменение фото
+app.patch("/photos", function (request, response) {
+  var fileName = path.resolve(__dirname, "./data/photos.json");
+  let data = readFileSync(fileName, "utf8");
+  let photos = JSON.parse(data);
+
+  let array = photos.map(function (e) {
+    return e.id;
+  });
+
+  let index = array.indexOf(request.body.id);
+
+  if (index > -1) {
+    photos[index].title = request.body.title;
+    if (request.files) {
+      let image = request.files.image;
+      image.mv(__dirname + "/public/images/" + image.name);
+      photos[index].thumbnailUrl = "http://localhost:3001/images/" + image.name;
+      photos[index].url = "http://localhost:3001/images/" + image.name;
+    }
+  }
+
+  response.send(photos);
+  console.log(request.body);
+  writeFileSync(fileName, JSON.stringify(photos, null, 4));
+});
+
 // удаление фото
 app.delete("/photos", function (request, response) {
   var fileName = path.resolve(__dirname, "./data/photos.json");
@@ -142,27 +190,6 @@ app.delete("/photos", function (request, response) {
   response.send(photos);
 
   writeFileSync(fileName, JSON.stringify(photos, null, 4));
-});
-
-// изменение альбома
-app.patch("/albums", function (request, response) {
-  var fileName = path.resolve(__dirname, "./data/albums.json");
-  let data = readFileSync(fileName, "utf8");
-  let albums = JSON.parse(data);
-
-  let array = albums.map(function (e) {
-    return e.id;
-  });
-
-  let index = array.indexOf(request.body.id);
-
-  if (index > -1) {
-    albums[index].title = request.body.title;
-  }
-
-  response.send(albums);
-
-  writeFileSync(fileName, JSON.stringify(albums, null, 4));
 });
 
 app.listen(3001);

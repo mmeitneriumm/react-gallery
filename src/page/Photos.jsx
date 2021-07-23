@@ -39,7 +39,11 @@ class Photo extends Component {
           >
             Скрыть все
           </Button>
-          <AddPhoto albumId={this.props.match.params.id} />
+          <AddPhoto
+            albumId={this.props.match.params.id}
+            id={photo.id}
+            title={photo.title}
+          />
         </div>
         <div style={styles.PhotoCard}>
           <div style={styles.AllCards}>
@@ -63,7 +67,11 @@ class Photo extends Component {
                           Скрыть
                         </Button>
                         <DeleteModal id={photo.id} type={"photos"} />
-                        <EditPhoto />
+                        <EditPhoto
+                          albumId={this.props.match.params.id}
+                          id={photo.id}
+                          title={photo.title}
+                        />
                       </div>
                     </div>
                   );
