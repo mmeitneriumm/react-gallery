@@ -5,6 +5,7 @@ import AddPhoto from "../components/AddPhoto";
 import axios from "axios";
 import ModalImage from "react-modal-image";
 import { Button } from "@material-ui/core";
+import EditPhoto from "../components/EditPhoto";
 
 class Photo extends Component {
   state = {
@@ -62,7 +63,7 @@ class Photo extends Component {
                           Скрыть
                         </Button>
                         <DeleteModal id={photo.id} type={"photos"} />
-                        <Button>Изменить</Button>
+                        <EditPhoto />
                       </div>
                     </div>
                   );

@@ -4,6 +4,7 @@ import { styles } from "../style/styles";
 import { NavLink } from "react-router-dom";
 import { Button, Card } from "antd";
 import axios from "axios";
+import EditAlbum from "../components/EditAlbum";
 
 class Album extends Component {
   state = {
@@ -78,7 +79,7 @@ class Album extends Component {
                         >
                           Скрыть
                         </Button>
-                        <Button>Изменить</Button>
+                        <EditAlbum title={albumItem.title} id={albumItem.id} />
                         <DeleteModal id={albumItem.id} type={"albums"} />
                       </div>
                     </>

@@ -54,7 +54,7 @@ app.delete("/albums", function (request, response) {
   if (index > -1) {
     albums.splice(index, 1);
   }
-  console.dir(albums, { maxArrayLength: null });
+  // console.dir(albums, { maxArrayLength: null });
   response.send(albums);
 
   writeFileSync(fileName, JSON.stringify(albums, null, 4));
@@ -123,7 +123,7 @@ app.post("/photos", function (request, response) {
   writeFileSync(fileName, JSON.stringify(photos, null, 4));
 });
 
-// удаление альбома
+// удаление фото
 app.delete("/photos", function (request, response) {
   var fileName = path.resolve(__dirname, "./data/photos.json");
   let data = readFileSync(fileName, "utf8");
@@ -142,6 +142,27 @@ app.delete("/photos", function (request, response) {
   response.send(photos);
 
   writeFileSync(fileName, JSON.stringify(photos, null, 4));
+});
+
+// изменение альбома
+app.patch("/albums", function (request, response) {
+  var fileName = path.resolve(__dirname, "./data/albums.json");
+  let data = readFileSync(fileName, "utf8");
+  let albums = JSON.parse(data);
+
+  let array = albums.map(function (e) {
+    return e.id;
+  });
+
+  let index = array.indexOf(request.body.id);
+
+  if (index > -1) {
+    albums[index].title = request.body.title;
+  }
+
+  response.send(albums);
+
+  writeFileSync(fileName, JSON.stringify(albums, null, 4));
 });
 
 app.listen(3001);

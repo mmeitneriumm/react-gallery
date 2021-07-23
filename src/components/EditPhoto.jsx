@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Image } from "react";
 import { styles, modalStyle } from "../style/styles";
 import { Button } from "antd";
 import Modal from "react-modal";
@@ -6,13 +6,15 @@ import axios from "axios";
 
 Modal.setAppElement("#root");
 
-class AddPhoto extends React.Component {
+class EditPhoto extends React.Component {
   constructor(props) {
     super(props);
   }
 
   state = {
     modalIsOpen: false,
+    textInput: "",
+    image: "",
   };
 
   openModal() {
@@ -27,7 +29,7 @@ class AddPhoto extends React.Component {
     e.preventDefault();
     console.log(e.target[1].files[0]);
     const formData = new FormData();
-    formData.append("title", e.target[0].value);
+    formData.append("title", this.state.textInput);
     formData.append("image", e.target[1].files[0]);
     formData.append("albumId", this.props.albumId);
     axios.post("http://localhost:3001/photos", formData).then(() => {
@@ -40,13 +42,11 @@ class AddPhoto extends React.Component {
     return (
       <>
         <Button
-          style={styles.Button}
-          size={"large"}
           onClick={() => {
             this.openModal();
           }}
         >
-          Добавить фото
+          Изменить
         </Button>
         <Modal
           style={modalStyle}
@@ -72,11 +72,24 @@ class AddPhoto extends React.Component {
               id="getFileForm"
               enctype="multipart/form-data"
             >
-              <>
-                <p>Введите название фото</p>
-                <input type="text" name="title" />
-              </>
-              <input type="file" name="image" />
+              <img style={styles.Img} src={this.state.image} />
+              <input
+                type="text"
+                name="title"
+                value={this.state.textInput}
+                onChange={(e) => {
+                  this.setState({ textInput: e.target.value });
+                }}
+              />
+              <input
+                type="file"
+                name="image"
+                onChange={(e) => {
+                  this.setState({
+                    image: URL.revokeObjectURL(e.target.files[0]),
+                  });
+                }}
+              />
               <input type="submit" />
             </form>
           </div>
@@ -86,4 +99,4 @@ class AddPhoto extends React.Component {
   }
 }
 
-export default AddPhoto;
+export default EditPhoto;
